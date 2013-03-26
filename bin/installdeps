@@ -1,14 +1,4 @@
 #!/usr/bin/perl
-#
-#   installdeps: Install dependent modules for the specified script
-#
-#   Written by Yasutaka ATARASHI <yakex@cpan.org>
-#
-#   Distributed under the terms of the same terms as the perl 5 programming language system itself
-#   See http://dev.perl.org/licenses/
-#
-#   $Id$
-#
 
 use strict;
 use warnings;
