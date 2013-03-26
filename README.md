@@ -1,0 +1,26 @@
+# NAME
+
+App::installdeps - A tiny script to install dependent modules
+
+# VERSION
+
+version v0.0.0
+
+# DESCRIPTION
+
+This is a tinay script to install dependent modules.
+If you upload your scripts or modules to PAUSE, you can install dependent modules by cpanm/cpan/cpanp.
+However, it is almost impossible and meaningless to upload all your daily-use scripts.
+
+This script scans source to detect dependent modules and install them.
+
+# AUTHOR
+
+Yasutaka ATARASHI <yakex@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Yasutaka ATARASHI.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
