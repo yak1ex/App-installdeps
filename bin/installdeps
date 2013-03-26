@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+#
+#   installdeps: Install dependent modules for the specified script
+#
+#   Written by Yasutaka ATARASHI <yakex@cpan.org>
+#
+#   Distributed under the terms of the same terms as the perl 5 programming language system itself
+#   See http://dev.perl.org/licenses/
+#
+#   $Id$
+#
+
+use strict;
+use warnings;
+
+use Getopt::Std;
+use Pod::Usage;
+
+use Module::ExtractUse;
+
+my %opts;
+getopts('hi:n', \%opts);
+pod2usage(-verbosity => 2) if exists $opts{h};
+pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
+my $command = $opts{i} || 'cpanm';
+
+my $p = Module::ExtractUse->new;
+my %modules;
+
+while(my $file = shift) {
+	$p->extract_use($file);
+	(%modules) = (%modules, %{$p->used});
+}
+my (@target) = grep { ! eval "use $_"; } keys %modules;
+if($opts{n}) {
+	print join(' ', @target), "\n";
+} else {
+	print $command,' ',join(' ', @target), "\n";
+	system $command,@target;
+}
+
+__END__
+
+=head1 NAME
+
+installdeps - Install dependent modules for the specified script
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=cut

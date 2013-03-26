@@ -1,0 +1,4 @@
+.build/
+App-installdeps-*.tar.gz
+App-installdeps-*/
+*.BAK
