@@ -13,7 +13,7 @@ use Pod::Usage;
 use Module::ExtractUse;
 
 my %opts;
-getopts('hi:n', \%opts);
+getopts('hi:nx:', \%opts);
 pod2usage(-verbosity => 2) if exists $opts{h};
 pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
 my $command = $opts{i} || 'cpanm';
@@ -25,7 +25,7 @@ while(my $file = shift) {
 	$p->extract_use($file);
 	(%modules) = (%modules, %{$p->used});
 }
-my (@target) = grep { ! eval "use $_"; } keys %modules;
+my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "use $_"; } keys %modules;
 if($opts{n}) {
 	print join(' ', @target), "\n";
 } else {
@@ -67,4 +67,6 @@ Shot this POD help
 Dry run (Do not install modules actually).
 = C<-i E<lt>commandE<gt>>
 Specify install command. Defaults to C<cpanm>.
+= C<-x E<lt>regexdE<gt>>
+Specify regex for exclusion. If module names match to this regex, they are excluded from install targets.
 =cut
