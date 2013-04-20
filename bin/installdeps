@@ -7,45 +7,9 @@ use warnings;
 # ABSTRACT: A tiny script to install dependent modules
 # VERSION
 
-use Getopt::Std;
-use Pod::Usage;
+use App::installdeps;
 
-use Module::ExtractUse;
-use File::Find;
-
-my %opts;
-getopts('hi:nx:', \%opts);
-pod2usage(-verbosity => 2) if exists $opts{h};
-pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
-my $command = $opts{i} || 'cpanm';
-
-my $p = Module::ExtractUse->new;
-my %modules;
-
-sub process_file
-{
-	my ($file) = @_;
-	$p->extract_use($file);
-	(%modules) = (%modules, %{$p->used});
-}
-
-while(my $arg = shift) {
-	if(-f $arg) { process_file($arg); }
-	elsif(-d $arg) {
-		find({ no_chdir => 1, wanted => sub {
-			process_file($_) if -f $_;
-		}}, $arg);
-	} else {
-		warn "can't recognize argument: $arg";
-	}
-}
-my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "use $_"; } keys %modules;
-if($opts{n}) {
-	print join(' ', @target), "\n";
-} else {
-	print $command,' ',join(' ', @target), "\n";
-	system $command,@target;
-}
+App::installdeps->run(@ARGV);
 
 __END__
 
