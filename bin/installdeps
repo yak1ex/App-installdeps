@@ -11,6 +11,7 @@ use Getopt::Std;
 use Pod::Usage;
 
 use Module::ExtractUse;
+use File::Find;
 
 my %opts;
 getopts('hi:nx:', \%opts);
@@ -21,9 +22,22 @@ my $command = $opts{i} || 'cpanm';
 my $p = Module::ExtractUse->new;
 my %modules;
 
-while(my $file = shift) {
+sub process_file
+{
+	my ($file) = @_;
 	$p->extract_use($file);
 	(%modules) = (%modules, %{$p->used});
+}
+
+while(my $arg = shift) {
+	if(-f $arg) { process_file($arg); }
+	elsif(-d $arg) {
+		find({ no_chdir => 1, wanted => sub {
+			process_file($_) if -f $_;
+		}}, $arg);
+	} else {
+		warn "can't recognize argument: $arg";
+	}
 }
 my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "use $_"; } keys %modules;
 if($opts{n}) {
@@ -49,6 +63,9 @@ __END__
   # the command following module names is invoked like
   # cpanm -f Foo::Bar Zot Qux
   installdeps -i 'cpanm -f' *.pl
+
+  # able to specify directories
+  installdeps lib t
 
 =head1 DESCRIPTION
 
