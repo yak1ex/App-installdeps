@@ -17,7 +17,7 @@ sub _process
 	local (@ARGV) = @_;
 
 	my %opts;
-	getopts('hi:nx:', \%opts);
+	getopts('hi:nx:ru', \%opts);
 	pod2usage(-verbosity => 2) if exists $opts{h};
 	pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
 	$opts{i} ||= 'cpanm';
@@ -34,7 +34,7 @@ sub _process
 			warn "can't recognize argument: $arg";
 		}
 	}
-	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "require $_"; } keys %{$p->used};
+	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { exists $opts{u} || ! eval "require $_"; } keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
 	return (\%opts, \@target);
 }
 
