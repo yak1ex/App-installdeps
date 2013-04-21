@@ -34,7 +34,7 @@ sub _process
 			warn "can't recognize argument: $arg";
 		}
 	}
-	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "use $_"; } keys %{$p->used};
+	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { ! eval "require $_"; } keys %{$p->used};
 	return (\%opts, \@target);
 }
 
