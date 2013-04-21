@@ -28,8 +28,9 @@ __END__
   # cpanm -f Foo::Bar Zot Qux
   installdeps -i 'cpanm -f' *.pl
 
-  # able to specify directories
-  installdeps lib t
+  # can specify directories
+  # exclude optional modules (-r) and include installed modules (-u)
+  installdeps -ru lib t
 
 =head1 DESCRIPTION
 
@@ -38,6 +39,7 @@ If you upload your scripts or modules to PAUSE, you can install dependent module
 However, it is almost impossible and meaningless to upload all your daily-use scripts.
 
 This script scans sources to detect dependent modules and install them.
+Without options, modules not yet installed and no matter whether it is used in eval context or not are considered.
 
 =head1 OPTIONS
 
@@ -50,4 +52,8 @@ Dry run (Do not install modules actually).
 Specify install command. Defaults to C<cpanm>.
 = C<-x E<lt>regexdE<gt>>
 Specify regex for exclusion. If module names match to this regex, they are excluded from install targets.
+= C<-r>
+Exclude optional modules, which are used in eval context.
+= C<-u>
+Include modules installed already.
 =cut

@@ -6,13 +6,27 @@ App::installdeps - A tiny script to install dependent modules
 
 version v0.0.0
 
+# SYNOPSIS
+
+    App::installdeps->run(@ARGV);
+
 # DESCRIPTION
 
-This is a tinay script to install dependent modules.
+This is an implementation module for a tiny script to install dependent modules.
 If you upload your scripts or modules to PAUSE, you can install dependent modules by cpanm/cpan/cpanp.
 However, it is almost impossible and meaningless to upload all your daily-use scripts.
 
 This script scans source to detect dependent modules and install them.
+
+# METHODS
+
+## `run(@arg)`
+
+Process arguments. Typically, `@ARGV` is passed. For argument details, see [installdeps](http://search.cpan.org/perldoc?installdeps).
+
+# SEE ALSO
+
+- [installdeps](http://search.cpan.org/perldoc?installdeps)
 
 # AUTHOR
 
