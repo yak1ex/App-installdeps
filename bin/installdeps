@@ -30,7 +30,8 @@ __END__
 
   # can specify directories
   # exclude optional modules (-r) and include installed modules (-u)
-  installdeps -ru lib t
+  # additionally, exclude Acme::*. NOTE that // is not necessary.
+  installdeps -ru -x ^Acme:: lib t
 
 =head1 DESCRIPTION
 
