@@ -15,6 +15,10 @@ __END__
 
 =head1 SYNOPSIS
 
+installdeps C<-h>
+
+installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C<-u>] C<E<lt>files_or_dirsE<gt>>...
+
   # show POD help
   installdeps -h
 
@@ -35,7 +39,7 @@ __END__
 
 =head1 DESCRIPTION
 
-This is a tinay script to install dependent modules.
+This is a tiny script to install dependent modules.
 If you upload your scripts or modules to PAUSE, you can install dependent modules by cpanm/cpan/cpanp.
 However, it is almost impossible and meaningless to upload all your daily-use scripts.
 
@@ -51,7 +55,7 @@ Shot this POD help
 Dry run (Do not install modules actually).
 = C<-i E<lt>commandE<gt>>
 Specify install command. Defaults to C<cpanm>.
-= C<-x E<lt>regexdE<gt>>
+= C<-x E<lt>regexE<gt>>
 Specify regex for exclusion. If module names match to this regex, they are excluded from install targets.
 = C<-r>
 Exclude optional modules, which are used in eval context.
