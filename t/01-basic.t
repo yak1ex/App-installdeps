@@ -2,8 +2,6 @@ use Test::More;
 use Test::Exception;
 use FindBin;
 
-use_ok 'App::installdeps';
-
 my @tests = (
 	['-n',   ['target/1.pl'], [], 'simple -n'],
 	['-nu',  ['target/1.pl'], [qw(Test::More App::installdeps)], 'simple -nu'],
@@ -19,7 +17,17 @@ my @tests = (
 	['-nru', ['target'], [qw(Test::More App::installdeps)], 'dir -nru'],
 );
 
-plan tests => 1 + 2 * @tests;
+plan tests => 1 + 2 * 2 + 2 * @tests;
+
+use_ok 'App::installdeps';
+
+{
+	my ($opts, $target);
+	lives_ok { ($opts, $target) = App::installdeps::_process('-n', "$FindBin::Bin/target/1.pl") };
+	is($opts->{i}, 'cpanm', 'default command');
+	lives_ok { ($opts, $target) = App::installdeps::_process('-n', '-i', 'cpan', "$FindBin::Bin/target/1.pl") };
+	is($opts->{i}, 'cpan', 'overridden command');
+}
 
 foreach my $test (@tests) {
 	my ($opts, $target);
