@@ -11,6 +11,12 @@ my @tests = (
 	['-n',   ['target/2.pl'], [], 'eval -n'],
 	['-nu',  ['target/2.pl'], [qw(Test::More Test::Exception)], 'eval -nu'],
 	['-nru', ['target/2.pl'], [qw(Test::More)], 'eval -nru'],
+	['-n',   [qw(target/1.pl target/2.pl)], [], 'multi -n'],
+	['-nu',  [qw(target/1.pl target/2.pl)], [qw(Test::More Test::Exception App::installdeps)], 'multi -nu'],
+	['-nru', [qw(target/1.pl target/2.pl)], [qw(Test::More App::installdeps)], 'multi -nru'],
+	['-n',   ['target'], [], 'dir -n'],
+	['-nu',  ['target'], [qw(Test::More Test::Exception App::installdeps)], 'dir -nu'],
+	['-nru', ['target'], [qw(Test::More App::installdeps)], 'dir -nru'],
 );
 
 plan tests => 1 + 2 * @tests;
