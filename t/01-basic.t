@@ -5,8 +5,12 @@ use FindBin;
 use_ok 'App::installdeps';
 
 my @tests = (
-	['-n',  ['1.pl'], [], 'simple -n'],
-	['-nu', ['1.pl'], [qw(Test::More App::installdeps)], 'simple -nu'],
+	['-n',   ['1.pl'], [], 'simple -n'],
+	['-nu',  ['1.pl'], [qw(Test::More App::installdeps)], 'simple -nu'],
+	['-nru', ['1.pl'], [qw(Test::More App::installdeps)], 'simple -nru'],
+	['-n',   ['2.pl'], [], 'eval -n'],
+	['-nu',  ['2.pl'], [qw(Test::More Test::Exception)], 'eval -nu'],
+	['-nru', ['2.pl'], [qw(Test::More)], 'eval -nru'],
 );
 
 plan tests => 1 + 2 * @tests;
