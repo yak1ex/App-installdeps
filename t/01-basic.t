@@ -18,5 +18,5 @@ plan tests => 1 + 2 * @tests;
 foreach my $test (@tests) {
 	my ($opts, $target);
 	lives_ok { ($opts, $target) = App::installdeps::_process($test->[0], map { "$FindBin::Bin/$_" } @{$test->[1]}) };
-	is_deeply($target, $test->[2], $test->[3]);
+	is_deeply([sort @$target], [sort @{$test->[2]}], $test->[3]);
 }
