@@ -3,9 +3,16 @@ use Test::Exception;
 use FindBin;
 
 use_ok 'App::installdeps';
-my ($opts, $target);
-#lives_ok { ($opts, $target) = App::installdeps::_process() };
-lives_ok { ($opts, $target) = App::installdeps::_process('-n', "$FindBind::Bin/1.pl") };
-is_deeply($target, [], 'simple');
-lives_ok { ($opts, $target) = App::installdeps::_process('-nu', "$FindBin::Bin/1.pl") };
-is_deeply($target, [qw(Test::More App::installdeps)], 'simple');
+
+my @tests = (
+	['-n',  ['1.pl'], [], 'simple -n'],
+	['-nu', ['1.pl'], [qw(Test::More App::installdeps)], 'simple -nu'],
+);
+
+plan tests => 1 + 2 * @tests;
+
+foreach my $test (@tests) {
+	my ($opts, $target);
+	lives_ok { ($opts, $target) = App::installdeps::_process($test->[0], map { "$FindBin::Bin/$_" } @{$test->[1]}) };
+	is_deeply($target, $test->[2], $test->[3]);
+}
