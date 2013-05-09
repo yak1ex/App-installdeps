@@ -18,7 +18,7 @@ sub _process
 
 	my %opts;
 	getopts('hi:nx:ru', \%opts);
-	pod2usage(-verbosity => 2) if exists $opts{h};
+	pod2usage(-verbose => 2) if exists $opts{h};
 	pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
 	$opts{i} ||= 'cpanm';
 
