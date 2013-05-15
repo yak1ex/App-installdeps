@@ -47,7 +47,7 @@ sub run
 		print join(' ', @$target), "\n";
 	} else {
 		print $opts->{i},' ',join(' ', @$target), "\n";
-#		system $opts->{i},@$target;
+		system $opts->{i},@$target;
 	}
 }
 
