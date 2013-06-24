@@ -7,6 +7,7 @@ use warnings;
 # VERSION
 
 use Getopt::Std;
+use Getopt::Config::FromPod;
 use Pod::Usage;
 
 use Module::ExtractUse;
@@ -17,7 +18,7 @@ sub _process
 	local (@ARGV) = @_;
 
 	my %opts;
-	getopts('hi:nx:ru', \%opts);
+	getopts(Getopt::Config::FromPod->string, \%opts);
 	pod2usage(-verbose => 2) if exists $opts{h};
 	pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
 	$opts{i} ||= 'cpanm';

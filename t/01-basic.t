@@ -1,6 +1,9 @@
 use Test::More;
 use Test::Exception;
 use FindBin;
+use Getopt::Config::FromPod;
+Getopt::Config::FromPod->set_class_default(-file => 'bin/installdeps');
+
 
 my @tests = (
 	['-n',   ['target/1.pl'], [], 'simple -n'],

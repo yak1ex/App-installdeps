@@ -61,4 +61,17 @@ Specify regex for exclusion. If module names match to this regex, they are exclu
 Exclude optional modules, which are used in eval context.
 = C<-u>
 Include modules installed already.
+
+=for getopt 'h'
+
+=for getopt 'n'
+
+=for getopt 'i:'
+
+=for getopt 'x:'
+
+=for getopt 'r'
+
+=for getopt 'u'
+
 =cut
