@@ -13,6 +13,19 @@ use Pod::Usage;
 use Module::ExtractUse;
 use File::Find;
 
+sub _exists
+{
+	my $module = shift;
+	unless($module =~ /\.pm$/) {
+		$module =~ s@::@/@g;
+		$module .= '.pm';
+	}
+	for my $prefix (@INC) {
+		return 1 if -e "$prefix/$module";
+	}
+	return;
+}
+
 sub _process
 {
 	local (@ARGV) = @_;
@@ -35,7 +48,7 @@ sub _process
 			warn "can't recognize argument: $arg";
 		}
 	}
-	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { exists $opts{u} || ! eval "require $_"; } keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
+	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { exists $opts{u} || ! _exists($_) } keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
 	return (\%opts, \@target);
 }
 
