@@ -48,7 +48,13 @@ sub _process
 			warn "can't recognize argument: $arg";
 		}
 	}
-	my (@target) = grep { ! exists $opts{x} || $_ !~ /$opts{x}/ } grep { exists $opts{u} || ! _exists($_) } keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
+	my @target;
+	my @candidate = keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
+	while(my $candidate = shift @candidate) {
+		next if ! exists $opts{u} && _exists($candidate);
+		next if exists $opts{x} && $candidate =~ /$opts{x}/;
+		push @target, $candidate;
+	}
 	return (\%opts, \@target);
 }
 
