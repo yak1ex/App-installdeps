@@ -21,7 +21,8 @@ sub _exists
 		$module .= '.pm';
 	}
 	for my $prefix (@INC) {
-		return 1 if -e "$prefix/$module";
+		my $path = "$prefix/$module";
+		return $path if -e $path;
 	}
 	return;
 }
@@ -49,10 +50,20 @@ sub _process
 		}
 	}
 	my @target;
+	my %checked;
 	my @candidate = keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
 	while(my $candidate = shift @candidate) {
-		next if ! exists $opts{u} && _exists($candidate);
+		my $path;
+		$path = _exists($candidate) if ! exists $opts{u} || exists $opts{R};
+		next if ! exists $opts{u} && defined $path;
 		next if exists $opts{x} && $candidate =~ /$opts{x}/;
+		next if exists $checked{$candidate};
+		if(exists $opts{R}) {
+			$checked{$candidate} = 1;
+			my $pp = Module::ExtractUse->new;
+			$pp->extract_use($path);
+			push @candidate, grep { ! exists $checked{$_} } keys %{exists $opts{r} ? $pp->used_out_of_eval : $pp->used};
+		}
 		push @target, $candidate;
 	}
 	return (\%opts, \@target);
