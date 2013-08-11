@@ -56,11 +56,13 @@ Dry run (Do not install modules actually).
 = C<-i E<lt>commandE<gt>>
 Specify install command. Defaults to C<cpanm>.
 = C<-x E<lt>regexE<gt>>
-Specify regex for exclusion. If module names match to this regex, they are excluded from install targets.
+Specify regex for exclusion. If module names match to this regex, they are excluded from install targets. Recursive check by C<-R> is not done for excluded modules, either.
 = C<-r>
 Exclude optional modules, which are used in eval context.
 = C<-u>
 Include modules installed already.
+= C<-R>
+Recursive dependency check for existing modules.
 
 =for getopt 'h'
 
@@ -73,5 +75,7 @@ Include modules installed already.
 =for getopt 'r'
 
 =for getopt 'u'
+
+=for getopt 'R'
 
 =cut
