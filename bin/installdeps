@@ -17,7 +17,7 @@ __END__
 
 installdeps C<-h>
 
-installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C<-u>] C<E<lt>files_or_dirsE<gt>>...
+installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C<-u>] [C<-R>] C<E<lt>files_or_dirsE<gt>>...
 
   # show POD help
   installdeps -h
@@ -33,9 +33,10 @@ installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C
   installdeps -i 'cpanm -f' *.pl
 
   # can specify directories
-  # exclude optional modules (-r) and include installed modules (-u)
+  # exclude optional modules (-r), include installed modules (-u) and
+  # recursive check (-R)
   # additionally, exclude Acme::*. NOTE that // is not necessary.
-  installdeps -ru -x ^Acme:: lib t
+  installdeps -ruR -x ^Acme:: lib t
 
 =head1 DESCRIPTION
 
