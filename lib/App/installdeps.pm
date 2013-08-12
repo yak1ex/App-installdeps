@@ -59,8 +59,8 @@ sub _process
 		$path = _exists($candidate) if ! exists $opts{u} || exists $opts{R};
 		next if exists $opts{x} && $candidate =~ /$opts{x}/;
 		next if exists $checked{$candidate};
+		$checked{$candidate} = 1;
 		if(defined $path && exists $opts{R}) {
-			$checked{$candidate} = 1;
 			my $pp = Module::ExtractUse->new;
 			$pp->extract_use($path);
 			push @candidate, grep { ! exists $checked{$_} } keys %{exists $opts{r} ? $pp->used_out_of_eval : $pp->used};
