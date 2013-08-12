@@ -52,7 +52,7 @@ sub _process
 	}
 	my @target;
 	my %checked;
-	my @candidate = keys %{exists $opts{r} ? $p->used_out_of_eval : $p->used};
+	my @candidate = keys %{exists $opts{r} ? $p->used_out_of_eval || {}: $p->used || {}};
 	while(my $candidate = shift @candidate) {
 		next if version::is_lax($candidate);
 		my $path;
@@ -63,7 +63,7 @@ sub _process
 		if(defined $path && exists $opts{R}) {
 			my $pp = Module::ExtractUse->new;
 			$pp->extract_use($path);
-			push @candidate, grep { ! exists $checked{$_} } keys %{exists $opts{r} ? $pp->used_out_of_eval : $pp->used};
+			push @candidate, grep { ! exists $checked{$_} } keys %{exists $opts{r} ? $pp->used_out_of_eval || {} : $pp->used || {}};
 		}
 		next if ! exists $opts{u} && defined $path;
 		push @target, $candidate;
