@@ -33,10 +33,10 @@ installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C
   installdeps -i 'cpanm -f' *.pl
 
   # can specify directories
-  # exclude optional modules (-r), include installed modules (-u) and
-  # recursive check (-R)
+  # exclude optional modules (-r), include installed modules (-u),
+  # recursive check (-R) and disable default exclusion filter (-X)
   # additionally, exclude Acme::*. NOTE that // is not necessary.
-  installdeps -ruR -x ^Acme:: lib t
+  installdeps -ruRX -x ^Acme:: lib t
 
 =head1 DESCRIPTION
 
@@ -64,6 +64,8 @@ Exclude optional modules, which are used in eval context.
 Include modules installed already.
 = C<-R>
 Recursive dependency check for existing modules.
+= C<-X>
+Disable default exclusion filter /\$/. To specify C<-x> does NOT imply this option.
 
 =for getopt 'h'
 
@@ -78,5 +80,7 @@ Recursive dependency check for existing modules.
 =for getopt 'u'
 
 =for getopt 'R'
+
+=for getopt 'X'
 
 =cut

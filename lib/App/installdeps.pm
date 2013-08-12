@@ -58,6 +58,7 @@ sub _process
 		my $path;
 		$path = _exists($candidate) if ! exists $opts{u} || exists $opts{R};
 		next if exists $opts{x} && $candidate =~ /$opts{x}/;
+		next if ! exists $opts{X} && $candidate =~ /\$/;
 		next if exists $checked{$candidate};
 		$checked{$candidate} = 1;
 		if(defined $path && exists $opts{R}) {
