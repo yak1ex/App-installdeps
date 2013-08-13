@@ -4,7 +4,7 @@ App::installdeps - A tiny script to install dependent modules
 
 # VERSION
 
-version v0.0.2
+version v0.0.3
 
 # SYNOPSIS
 
