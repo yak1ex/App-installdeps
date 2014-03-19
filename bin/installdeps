@@ -65,7 +65,7 @@ Include modules installed already.
 = C<-R>
 Recursive dependency check for existing modules.
 = C<-X>
-Disable default exclusion filter /\$/. To specify C<-x> does NOT imply this option.
+Disable default exclusion filter /\$|::$|^VMS::|^File::BSDGlob$/. To specify C<-x> does NOT imply this option.
 
 =for getopt 'h'
 
