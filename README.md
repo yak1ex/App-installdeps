@@ -22,11 +22,11 @@ This script scans source to detect dependent modules and install them.
 
 ## `run(@arg)`
 
-Process arguments. Typically, `@ARGV` is passed. For argument details, see [installdeps](http://search.cpan.org/perldoc?installdeps).
+Process arguments. Typically, `@ARGV` is passed. For argument details, see [installdeps](https://metacpan.org/pod/installdeps).
 
 # SEE ALSO
 
-- [installdeps](http://search.cpan.org/perldoc?installdeps)
+- [installdeps](https://metacpan.org/pod/installdeps)
 
 # AUTHOR
 
