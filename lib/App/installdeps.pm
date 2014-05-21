@@ -113,6 +113,59 @@ sub _process
 	return (\%opts, \@target, \%mid);
 }
 
+sub _output_N
+{
+	my ($opts, $target, $mid) = @_;
+	my (%tree, @parent, %parent);
+
+
+# Make tree structure
+	foreach my $entry (@$target) {
+		if(! exists $parent{$entry->[0]}) {
+			push @parent, $entry->[0];
+			$parent{$entry->[0]} = 1;
+		}
+		push @{$tree{$entry->[0]}}, $entry->[1];
+	}
+
+# Cut unnecessary nodes
+	my (%visited);
+	my $cutter; $cutter = sub {
+		my ($root) = @_;
+		my $cut = exists $mid->{$root};
+		my @new;
+		foreach my $child (@{$tree{$root}}) {
+			my $mycut = $cutter->($child);
+			push @new, $child unless $mycut;
+			$cut &&= $mycut;
+		}
+		if(@new) {
+			$tree{$root} = \@new;
+		} else {
+			delete $tree{$root};
+		}
+		return $cut;
+	};
+	foreach my $parent (@parent) {
+		$cutter->($parent) if ! exists $visited{$parent};
+		$visited{$parent} = 1;
+	}
+
+# Output
+	undef %visited;
+	my $out; $out = sub {
+		my ($root, $level) = @_;
+		print +('  ' x $level), (exists $mid->{$root} ? "($root)" : $root), (exists $visited{$root} ? ' [+]' : ''), "\n";
+		return if exists $visited{$root};
+		$visited{$root} = 1;
+		$out->($_, $level + 1) for @{$tree{$root}};
+	};
+	foreach my $parent (@parent) {
+		$out->($parent, 0) if ! exists $visited{$parent};
+		$visited{$parent} = 1;
+	}
+}
+
 sub run
 {
 	shift if @_ && eval { $_[0]->isa(__PACKAGE__) };
@@ -121,47 +174,7 @@ sub run
 	if($opts->{n}) {
 		print join(' ', @$target), "\n";
 	} elsif($opts->{N}) {
-		my (%tree, @parent, %parent);
-		foreach my $entry (@$target) {
-			if(! exists $parent{$entry->[0]}) {
-				push @parent, $entry->[0];
-				$parent{$entry->[0]} = 1;
-			}
-			push @{$tree{$entry->[0]}}, $entry->[1];
-		}
-		my $cutter; $cutter = sub {
-			my ($root) = @_;
-			my $cut = exists $mid->{$root};
-			my @new;
-			foreach my $child (@{$tree{$root}}) {
-				my $mycut = $cutter->($child);
-				push @new, $child unless $mycut;
-				$cut &&= $mycut;
-			}
-			if(@new) {
-				$tree{$root} = \@new;
-			} else {
-				delete $tree{$root};
-			}
-			return $cut;
-		};
-		my (%visited);
-		foreach my $parent (@parent) {
-			$cutter->($parent) if ! exists $visited{$parent};
-			$visited{$parent} = 1;
-		}
-		undef %visited;
-		my $out; $out = sub {
-			my ($root, $level) = @_;
-			print +('  ' x $level), (exists $mid->{$root} ? "($root)" : $root), (exists $visited{$root} ? ' [+]' : ''), "\n";
-			return if exists $visited{$root};
-			$visited{$root} = 1;
-			$out->($_, $level + 1) for @{$tree{$root}};
-		};
-		foreach my $parent (@parent) {
-			$out->($parent, 0) if ! exists $visited{$parent};
-			$visited{$parent} = 1;
-		}
+		_output_N($opts, $target, $mid);
 	} else {
 		print $opts->{i},' ',join(' ', @$target), "\n";
 		system $opts->{i},@$target;
