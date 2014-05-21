@@ -146,10 +146,16 @@ sub _output_N
 		}
 		return $cut;
 	};
+	my @newparent;
 	foreach my $parent (@parent) {
-		$cutter->($parent) if ! exists $visited{$parent};
+		if(! exists $visited{$parent}) {
+			if(!$cutter->($parent)) {
+				push @newparent, $parent;
+			}
+		}
 		$visited{$parent} = 1;
 	}
+	@parent = @newparent;
 
 # Output
 	undef %visited;
