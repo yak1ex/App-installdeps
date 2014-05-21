@@ -28,6 +28,23 @@ sub _exists
 	return;
 }
 
+sub _candidate
+{
+	my $opts = shift;
+	my $p = Module::ExtractUse->new;
+	while(my $arg = shift) {
+		if(-f $arg) { $p->extract_use($arg); }
+		elsif(-d $arg) {
+			find({ no_chdir => 1, wanted => sub {
+				$p->extract_use($_) if -f $_;
+			}}, $arg);
+		} else {
+			warn "can't recognize argument: $arg";
+		}
+	}
+	return keys %{exists $opts->{r} ? $p->used_out_of_eval || {}: $p->used || {}};
+}
+
 sub _process
 {
 	local (@ARGV) = @_;
@@ -38,21 +55,9 @@ sub _process
 	pod2usage(-msg => 'At least one argument MUST be specified', -verbose => 0, -exitval => 1) if ! @ARGV;
 	$opts{i} ||= 'cpanm';
 
-	my $p = Module::ExtractUse->new;
-
-	while(my $arg = shift @ARGV) {
-		if(-f $arg) { $p->extract_use($arg); }
-		elsif(-d $arg) {
-			find({ no_chdir => 1, wanted => sub {
-				$p->extract_use($_) if -f $_;
-			}}, $arg);
-		} else {
-			warn "can't recognize argument: $arg";
-		}
-	}
 	my @target;
 	my %checked;
-	my @candidate = keys %{exists $opts{r} ? $p->used_out_of_eval || {}: $p->used || {}};
+	my @candidate = _candidate(\%opts, @ARGV);
 	while(my $candidate = shift @candidate) {
 		next if version::is_lax($candidate);
 		my $path;
