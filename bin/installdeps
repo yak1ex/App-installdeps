@@ -26,6 +26,10 @@ installdeps [C<-n>] [C<-i E<lt>commandE<gt>>] [C<-x E<lt>regexE<gt>>] [C<-r>] [C
   # multiple files can be specified
   installdeps -n *.pl
 
+  # dry-run with tree (only shows target modules with dependency tree)
+  # multiple files can be specified
+  installdeps -N *.pl
+
   # specify install command
   # defaults to cpanm
   # the command following module names is invoked like
@@ -54,6 +58,8 @@ Without options, modules not yet installed and no matter whether it is used in e
 Shot this POD help
 = C<-n>
 Dry run (Do not install modules actually).
+= C<-N>
+Dry run with tree (Do not install modules actually).
 = C<-i E<lt>commandE<gt>>
 Specify install command. Defaults to C<cpanm>.
 = C<-x E<lt>regexE<gt>>
@@ -70,6 +76,8 @@ Disable default exclusion filter /\$|::$|^VMS::|^File::BSDGlob$/. To specify C<-
 =for getopt 'h'
 
 =for getopt 'n'
+
+=for getopt 'N'
 
 =for getopt 'i:'
 
