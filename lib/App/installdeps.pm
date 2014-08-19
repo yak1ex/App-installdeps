@@ -183,7 +183,7 @@ sub run
 		_output_N($opts, $target, $mid);
 	} else {
 		print $opts->{i},' ',join(' ', @$target), "\n";
-		system $opts->{i},@$target;
+		system split(/\s+/,$opts->{i}),@$target;
 	}
 }
 
